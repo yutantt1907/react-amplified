@@ -1,4 +1,5 @@
 /* eslint-disable import/first */
+
 /* src/App.js */
 import React, { useEffect, useState } from 'react';
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
@@ -10,22 +11,33 @@ import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
 // axios　https通信用モジュール
+import axios from 'axios';
 import jsonplaceholder from './apis/jsonplaceholder';
 import Button from './components/Button';
 import Resources from './components/Resources';
 //
 
 const initialState = { name: '', description: '' }
+const server = 'https://9kwveffawh.execute-api.ap-northeast-1.amazonaws.com/default/iot_autocall_OutboundStart'
+
 
 const App = () => {
   const [formState, setFormState] = useState(initialState)
   const [todos, setTodos] = useState([])
 //
   const [resources,setResources] = useState([]);
-  const getPosts =async()=>{
+  const axios = require('axios');
+  const params = {withCredentials: true
+  }; 
+  const calling =async()=>{
     try{
-        const posts = await jsonplaceholder.get('/posts');
-        setResources(posts.data);
+        console.log("lambda invoking !")
+        axios.get(server,params)
+        .then((res)=>{
+          console.log(res)
+        })
+        // const posts = await jsonplaceholder.get('/posts');
+        // setResources(posts.data);
     }catch(err){
       console.log(err);
     };
@@ -70,8 +82,14 @@ const App = () => {
 
   return (
     <div>
+      <h2 style ={{padding:'auto 30px'}}>発呼するボタン（簡易版）</h2>
+      <div className='ui container'style={{marginTop:'30px'}}>
+        <Button onClick={calling} color='primary' text='発呼' />
+        {/* <Button onClick={getalbums} color='red' text='albums' /> */}
+        <Resources resources={resources}/>
+      </div>
       <div style={styles.container}>
-        <h2>Amplify Todos</h2>
+        <h2>避難者登録用（insertするだけ）</h2>
         <input
           onChange={event => setInput('name', event.target.value)}
           style={styles.input}
@@ -84,7 +102,7 @@ const App = () => {
           value={formState.description}
           placeholder="Description"
         />
-        <button style={styles.button} onClick={addTodo}>Create Todo</button>
+        <button style={styles.button} onClick={addTodo}>避難者登録</button>
         {
           todos.map((todo, index) => (
             <div key={todo.id ? todo.id : index} style={styles.todo}>
@@ -94,11 +112,7 @@ const App = () => {
           ))
         }
       </div>
-    <div className='ui container'style={{marginTop:'30px'}}>
-      <Button onClick={getPosts} color='primary' text='posts' />
-      <Button onClick={getalbums} color='red' text='albums' />
-      <Resources resources={resources}/>
-    </div>
+
   </div>
 
   )
