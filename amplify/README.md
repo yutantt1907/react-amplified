@@ -6,8 +6,3 @@ Helpful resources:
 - Amplify CLI documentation: https://docs.amplify.aws/cli
 - More details on this folder & generated files: https://docs.amplify.aws/cli/reference/files
 - Join Amplify's community: https://amplify.aws/community/
-#endpoint
-GraphQL endpoint: https://6hvvtnx7tncqhpgrrhxiztukcy.appsync-api.us-east-1.amazonaws.com/graphql
-GraphQL API KEY: da2-yz756eu7gnajdpdjb2iblvow7a
-
-GraphQL transformer version: 2

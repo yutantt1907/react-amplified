@@ -1,0 +1,13 @@
+
+.field{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+
+}
+.field .input_field{
+    display: block;
+    width: 45%;
+    margin-bottom: 10px;
+}

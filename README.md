@@ -68,3 +68,63 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+ //常時用(ボタンの判別）
+      ui_flg :"",
+      //発呼："call_start",
+      // "help",
+      // 発呼対象者リスト表示"call_target"
+      // 電話番号タブ登録ボタン："number_reg"
+      // 電話削除"number_del"
+      // 電話番号タブ更新ボタン:"number_reload"
+      // スクリプトタブ登録ボタン:"script_reg"
+
+call_area=HICITY&level=1&role=1&ui_flg=call_start
+      //発呼用
+      call_area : call_areas,
+			role : call_roles,
+      // 電話番号タブ登録ボタン：押下時処理
+      number : telTab_number,
+      turn : telTab_turn,
+      name : telTab_name,
+      town : telTab_town,
+      lang_pt : telTab_lang_pt,
+      script_ver: telTab_script_ver,
+      contact : telTab_contact,
+      sensor_id : telTab_sensor_id,
+      helper_name : telTab_helper_name,
+      helper_number : telTab_helper_number,
+      // 電話番号タブ削除ボタン：押下時処理
+      number : telTab_number_del,
+      // スクリプトタブ登録ボタン
+      version : scriptTab_version,
+      text1 : scriptTab_text1,
+      text2 : scriptTab_text2,
+      text3 : scriptTab_text3,
+      text4 : scriptTab_text4,
+      text5 : scriptTab_text5,
+      text6 : scriptTab_text6,
+      text7 : scriptTab_text7,
+      text8 : scriptTab_text8,
+      sms_from : scriptTab_sms_from,
+      sms_text : scriptTab_sms_text,
+      // スクリプトタブ削除ボタンscript_del
+      version : scriptTab_version_del,
+      // スクリプトタブ更新ボタン"script_reload"
+      // 避難登録／解除タブ：登録ボタンevac_reg
+      number : evacRegTab_telNo,
+      shelter : evacRegTab_shelter,
+      // 避難登録／解除タブ：解除ボタン"evac_del"
+      number : evacRegTab_telNo_del,
+      // 結果タブ：最新情報取得ボタンresult_get
+      // 避難所タブ登録ボタンshelter_reg
+      shelter_number : shelterTab_shelter_number,
+      shelter : shelterTab_shelter,
+      town : shelterTab_town,
+      max_capa : shelterTab_max_capa,
+      gw_id : shelterTab_gw_id,
+      // 避難所タブ削除ボタンshelter_del
+      shelter : shelterTab_shlter_del,
+      // 避難所タブ削除ダイアログのキャンセルボタン押下時処理shelter_reload
+

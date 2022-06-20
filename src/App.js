@@ -3,118 +3,98 @@
 /* src/App.js */
 import React, { useEffect, useState } from 'react';
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import { createTodo } from './graphql/mutations';
-import { listTodos } from './graphql/queries';
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import './App.css';
+import awsExports from "./aws-exports.js";
+// conponent
+import Button from "./components/CallingButton"
+import awsAutocallUi from "./apis/awsAutocallUi"; 
 
-import awsExports from "./aws-exports";
+
 Amplify.configure(awsExports);
 
-// axios　https通信用モジュール
-import axios from 'axios';
-import jsonplaceholder from './apis/jsonplaceholder';
-import Button from './components/Button';
-import Resources from './components/Resources';
-//
+// react-tabs
+import {Tab,Tabs,TabList,TabPanel} from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import NumberTab from './components/NumberTab';
+import ScriptTab from './components/ScriptTab';
+import UseRegistTab from './components/UserRegistTab';
+import ResultTab from './components/ResultTab';
+import ShelterTab from './components/ShelterTab';
+import SensorResultTab from './components/SensorResultTab';
+// react-modal popup
+import Popup from "./components/Popup" ;
+// icon
+import iconImage from "./img/autocalllogo_bl.png"
+
 
 const initialState = { name: '', description: '' }
 const server = 'https://9kwveffawh.execute-api.ap-northeast-1.amazonaws.com/default/iot_autocall_OutboundStart'
 
 
 const App = () => {
-  const [formState, setFormState] = useState(initialState)
-  const [todos, setTodos] = useState([])
-//
-  const [resources,setResources] = useState([]);
-  const axios = require('axios');
-  const params = {withCredentials: true
-  }; 
-  const calling =async()=>{
+  const onResetDemo =()=>{
     try{
-        console.log("lambda invoking !")
-        axios.get(server,params)
-        .then((res)=>{
-          console.log(res)
-        })
-        // const posts = await jsonplaceholder.get('/posts');
-        // setResources(posts.data);
-    }catch(err){
-      console.log(err);
-    };
-  }
-  const getalbums =async()=>{
-     try{
-        const albums = await jsonplaceholder.get('/albums');
-        setResources(albums.data);
-      }catch(err){
-        console.log(err);
+      const params = {
+          ui_flg : "demo_reset",//"call_target",
       }
-  };
-
-
-  useEffect(() => {
-    fetchTodos()
-  }, [])
-
-  function setInput(key, value) {
-    setFormState({ ...formState, [key]: value })
-  }
-
-  async function fetchTodos() {
-    try {
-      const todoData = await API.graphql(graphqlOperation(listTodos))
-      const todos = todoData.data.listTodos.items
-      setTodos(todos)
-    } catch (err) { console.log('error fetching todos') }
-  }
-
-  async function addTodo() {
-    try {
-      if (!formState.name || !formState.description) return
-      const todo = { ...formState }
-      setTodos([...todos, todo])
-      setFormState(initialState)
-      await API.graphql(graphqlOperation(createTodo, {input: todo}))
-    } catch (err) {
-      console.log('error creating todo:', err)
+      console.log(params)
+      const response = awsAutocallUi.get("/ui",{params})
+      console.log(response.data.body_data)
+      
+    }catch(err){
+          console.log(err)
     }
   }
 
+// // popup
+  const style = {
+    width :'50%',
+    margin :'0 auto',
+    marginTop: '150'
+  };
+  
+
   return (
-    <div>
-      <h2 style ={{padding:'auto 30px'}}>発呼するボタン（簡易版）</h2>
-      <div className='ui container'style={{marginTop:'30px'}}>
-        <Button onClick={calling} color='primary' text='発呼' />
-        {/* <Button onClick={getalbums} color='red' text='albums' /> */}
-        <Resources resources={resources}/>
-      </div>
-      <div style={styles.container}>
-        <h2>避難者登録用（insertするだけ）</h2>
-        <input
-          onChange={event => setInput('name', event.target.value)}
-          style={styles.input}
-          value={formState.name}
-          placeholder="Name"
-        />
-        <input
-          onChange={event => setInput('description', event.target.value)}
-          style={styles.input}
-          value={formState.description}
-          placeholder="Description"
-        />
-        <button style={styles.button} onClick={addTodo}>避難者登録</button>
-        {
-          todos.map((todo, index) => (
-            <div key={todo.id ? todo.id : index} style={styles.todo}>
-              <p style={styles.todoName}>{todo.name}</p>
-              <p style={styles.todoDescription}>{todo.description}</p>
-            </div>
-          ))
-        }
-      </div>
-
-  </div>
-
+    <div  >
+       <div id='header' className='header'>
+         <div className='iconImg'><img className='autocallIcon' src={iconImage} style ={{width:'100%',height:"100%"}}/></div>
+          <h2 className='header_name' style ={{padding:'auto 20px'}}>オートコール for デモ</h2>
+       </div>
+       <div id='main' className='ui container'>
+       <Popup/>
+       {/* <Button variant="success" className="mr-2 ui button" onClick={onResetDemo} style={{width:"200px",backgroundColor:"#FF0000",color:"#FFFFFF"}}>デモクリア</Button> */}
+       <Tabs >
+        <TabList className={"ui top attached tabular menu"}>
+          <Tab>電話番号</Tab>
+          {/* <Tab>スクリプト</Tab> */}
+          <Tab>避難登録</Tab>
+          {/* <Tab>結果</Tab>
+          <Tab>避難所</Tab>
+          <Tab>センサー</Tab> */}
+        </TabList>
+        <TabPanel className={"ui bottom attached active tab segment"}>
+          <NumberTab/>
+        </TabPanel >
+        <TabPanel >
+          <UseRegistTab/>          
+        </TabPanel>
+        {/* <TabPanel >
+          <ScriptTab/>
+        </TabPanel>
+        <TabPanel >
+          <ResultTab/>
+        </TabPanel>
+        <TabPanel >
+          <ShelterTab/>
+        </TabPanel>
+        <TabPanel>
+          <SensorResultTab/>
+        </TabPanel> */}
+      </Tabs>
+      <div style={style}>  {/* popUPした後の閉じるための外側の空間 */}</div>
+       </div>
+    </div>
   )
 }
 
